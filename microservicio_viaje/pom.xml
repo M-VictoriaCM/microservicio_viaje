@@ -41,11 +41,14 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+<<<<<<< HEAD
 		<dependency>
 			<groupId>jakarta.ws.rs</groupId>
 			<artifactId>jakarta.ws.rs-api</artifactId>
 			<version>3.1.0</version>
 		</dependency>
+=======
+>>>>>>> f358a337ceb46bb91c395f2f9941f73b01a5842d
 	</dependencies>
 
 	<build>

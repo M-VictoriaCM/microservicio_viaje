@@ -2,6 +2,9 @@
 <project version="4">
   <component name="Encoding">
     <file url="file://$PROJECT_DIR$/microservicio_viaje/src/main/java" charset="UTF-8" />
+<<<<<<< HEAD
     <file url="file://$PROJECT_DIR$/microservicio_viaje/src/main/resources" charset="UTF-8" />
+=======
+>>>>>>> f358a337ceb46bb91c395f2f9941f73b01a5842d
   </component>
 </project>
