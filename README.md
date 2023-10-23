@@ -13,6 +13,13 @@ Este microservicio es fundamental para garantizar la facturación precisa y la d
 
 ## Tecnologías Utilizadas:
 
-* Lenguaje de programación: 
-* Base de datos: 
+* Lenguaje de programación: Spring-boot <br><br>
+* Base de datos: MySQL
+* Datos de la base de datos:
+  * service_viaje<br><br>
 * Requerimientos y Dependencias:
+  * Maven
+  * Lombok
+  * Spring Web
+  * Spring Data JPA
+  * MySQL Driver 
