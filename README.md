@@ -1,4 +1,4 @@
-# microservicio_viaje 🚀
+# microservicio_viaje 🛴
 _Este microservicio es responsable de gestionar la información relacionada con los viajes realizados por los usuarios en nuestros monopatines eléctricos. Permite registrar el inicio y finalización de un viaje, así como el seguimiento de kilómetros recorridos durante el trayecto. Además, gestiona las pausas de viaje, si el usuario decide detenerse durante el recorrido. Este servicio garantiza un seguimiento preciso del uso de los monopatines y permite el cálculo de tarifas en función del tiempo de uso y la distancia recorrida._
 
 ## Funcionalidades Principales: 
