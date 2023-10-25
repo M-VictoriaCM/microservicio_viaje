@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -22,8 +24,14 @@ public class Pausa {
 
     @Column(nullable = false)
     private Timestamp hora_fin;
+
+    //Relaciones entre la clase Pausa y la clase Viaje
     @ManyToOne
-    @JoinColumn(name = "viaje_idViaje") // Cambia el nombre de la columna a la que se hace referencia
+    @JoinColumn(name = "viaje_idViaje")
     private Viaje viaje;
+
+    @ManyToOne
+    @JoinColumn(name = "estado_id")
+    private EstadoPausa estado;
 
 }

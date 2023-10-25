@@ -22,8 +22,10 @@ public class Tarifa {
 
     @Column(nullable = false)
     private int tarifaExtraPorPausaExtensa;
-
+    //Relaciones entre clases
     @OneToMany(mappedBy = "tarifa", fetch = FetchType.LAZY)
     private List<Viaje> viajes;
+
+
 
 }
