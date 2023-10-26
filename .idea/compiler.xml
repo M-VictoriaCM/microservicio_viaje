@@ -10,12 +10,6 @@
         <module name="microservicio_viaje" />
       </profile>
     </annotationProcessing>
-<<<<<<< HEAD
-    <bytecodeTargetLevel>
-      <module name="viaje-service" target="20" />
-    </bytecodeTargetLevel>
-=======
->>>>>>> f358a337ceb46bb91c395f2f9941f73b01a5842d
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">

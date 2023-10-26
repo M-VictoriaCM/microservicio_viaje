@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,13 +18,11 @@ public class Pausa {
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "idPausa")
-    private int idPausa;
-
+    private int id;
     @Column(nullable = false)
-    private Timestamp hora_inicio;
-
+    private Time horaInicioPausa;
     @Column(nullable = false)
-    private Timestamp hora_fin;
+    private Time horaFinPausa;
 
     //Relaciones entre la clase Pausa y la clase Viaje
     @ManyToOne
@@ -31,7 +30,7 @@ public class Pausa {
     private Viaje viaje;
 
     @ManyToOne
-    @JoinColumn(name = "estado_id")
+    @JoinColumn(name = "estado_estadoId")
     private EstadoPausa estado;
 
 }

@@ -15,15 +15,14 @@ public class Tarifa {
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "idTarifa")
-    private int idTarifa;
-
+    private int id;
     @Column(nullable = false)
     private int precioPorMinuto;
-
     @Column(nullable = false)
     private int tarifaExtraPorPausaExtensa;
+
     //Relaciones entre clases
-    @OneToMany(mappedBy = "tarifa", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "tarifa", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Viaje> viajes;
 
 

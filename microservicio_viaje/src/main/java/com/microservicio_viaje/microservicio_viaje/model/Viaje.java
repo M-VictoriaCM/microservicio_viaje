@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,25 +18,22 @@ public class Viaje {
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "idViaje")
-    private int idViaje;
+    private int id;
     @Column(nullable = false)
-    private String origen;
+    private String origenDelViaje;
     @Column(nullable = false)
-    private String destino;
+    private String destinoDelViaje;
     @Column(nullable = false)
-    private Timestamp horaInicioViaje;
+    private Time horaInicioViaje;
     @Column(nullable = false)
-    private Timestamp horaFinViaje;
+    private Time horaFinViaje;
     @Column(nullable = false)
-    private String estadoViaje;
-
-
-
-    //Relacion de clase viaje con Pausa
+    private Timestamp fechaDelViaje;
+    @Column(nullable = false)
+    //Relacion con la tabla Pausa
     @OneToMany(mappedBy = "viaje", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Pausa> pausas = new ArrayList<>();
-
-    //Relacion de clase viaje con Tarifa
+    //Relacion con la tabla Tarifa
     @ManyToOne
     @JoinColumn(name = "tarifa_idTarifa")
     private Tarifa tarifa;

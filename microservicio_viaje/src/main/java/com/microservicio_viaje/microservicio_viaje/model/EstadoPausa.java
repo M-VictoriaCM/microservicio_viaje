@@ -13,7 +13,7 @@ public class EstadoPausa {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "idEstado")
-    private int idEstado;
+    private int id;
     @Column(nullable = false)
-    private String tipo;
+    private String estadoDeLaPausa;
 }

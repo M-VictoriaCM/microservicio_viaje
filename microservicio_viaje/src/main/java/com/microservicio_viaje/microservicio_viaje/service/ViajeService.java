@@ -7,7 +7,7 @@ import com.microservicio_viaje.microservicio_viaje.repository.EstadoPausaReposit
 import com.microservicio_viaje.microservicio_viaje.repository.ViajeRepository;
 import org.springframework.stereotype.Service;
 
-import java.sql.Timestamp;
+import java.sql.Time;
 
 @Service
 public class ViajeService {
@@ -27,8 +27,8 @@ public class ViajeService {
     }
 
     private Long calcularTiempoDeUsoHastaPausa(Viaje viaje, Pausa pausa) {
-        Timestamp horaInicioViaje = viaje.getHoraInicioViaje();
-        Timestamp horaInicioPausa = pausa.getHora_inicio();
+        Time horaInicioViaje = viaje.getHoraInicioViaje();
+        Time horaInicioPausa = pausa.getHoraInicioPausa();
         return horaInicioPausa.getTime() - horaInicioViaje.getTime();
     }
 
@@ -38,9 +38,9 @@ public class ViajeService {
     }
 
     private Pausa crearNuevaPausa() {
-        EstadoPausa estadoPausado=estadoPausaRepository.findByEstado("PAUSADO");
+        EstadoPausa estadoPausado= estadoPausaRepository.findByEstado("PAUSADO");
         Pausa pausa = new Pausa();
-        pausa.setHora_inicio(new Timestamp(System.currentTimeMillis()));
+        pausa.setHoraInicioPausa(new Time(System.currentTimeMillis()));
         pausa.setEstado(estadoPausado);
         return pausa;
     }
@@ -53,15 +53,15 @@ public class ViajeService {
     }
 
     private long calcularTiempoTrancurridoDesdeReanudacion(Pausa reanudar) {
-        Timestamp horaReanudacion = reanudar.getHora_fin();
-        Timestamp horaActual = new Timestamp(System.currentTimeMillis());
+        Time horaReanudacion = reanudar.getHoraFinPausa();
+        Time horaActual = new Time(System.currentTimeMillis());
         return horaActual.getTime() - horaReanudacion.getTime();
     }
 
     private Pausa crearNuevaPausaReanudada(Pausa pausa) {
         EstadoPausa estadoActivo = estadoPausaRepository.findByEstado("ACTIVO");
         Pausa nuevaInstacia = new Pausa();
-        nuevaInstacia.setHora_inicio(pausa.getHora_inicio());
+        nuevaInstacia.setHoraInicioPausa(pausa.getHoraInicioPausa());
         nuevaInstacia.setEstado(estadoActivo);
         return nuevaInstacia;
     }
