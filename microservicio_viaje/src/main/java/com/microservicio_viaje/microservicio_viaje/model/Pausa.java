@@ -19,9 +19,7 @@ public class Pausa {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "idPausa")
     private int id;
-    @Column(nullable = false)
     private Time horaInicioPausa;
-    @Column(nullable = false)
     private Time horaFinPausa;
 
     //Relaciones entre la clase Pausa y la clase Viaje

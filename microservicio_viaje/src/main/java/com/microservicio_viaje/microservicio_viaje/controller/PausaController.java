@@ -3,7 +3,9 @@ package com.microservicio_viaje.microservicio_viaje.controller;
 import com.microservicio_viaje.microservicio_viaje.model.EstadoPausa;
 import com.microservicio_viaje.microservicio_viaje.model.Pausa;
 import com.microservicio_viaje.microservicio_viaje.repository.PausaRepository;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,31 +16,71 @@ public class PausaController {
     @Autowired
     private PausaRepository pausaRepository;
 
-    //Creo una pausa
+    /**
+     * Creacion de una pausa
+     * @param pausa
+     * @return una respuesta
+     */
     @PostMapping("/creoUnaPausa")
-    public Pausa creacionPausa(@RequestBody Pausa pausa) {
-        return pausaRepository.save(pausa);
+    public ResponseEntity<String>create(@RequestBody Pausa pausa) {
+        try {
+            pausaRepository.save(pausa);
+            return ResponseEntity.ok("Se agregó con exito");
+        }catch (Exception e){
+            return ResponseEntity.badRequest().body("Lamentablemente no se posible agregar el dato "+e.getMessage());
+        }
     }
 
-    //Obtengo todas las pausas
+    /**
+     *
+     * @return Muestro todas pausas
+     */
     @GetMapping("/pausa")
-    public List<Pausa> getAllPausa() {
+    public List<Pausa> getAll() {
         return pausaRepository.findAll();
     }
 
-    //Mostrar pausas por id
+    /**
+     * @param id
+     * @return pausa asociada a la id
+     */
     @GetMapping("/pausa/id/{id}")
-    public Pausa buscoPausasPorId(@PathVariable int id) {
+    public Pausa get(@PathVariable int id) {
         return pausaRepository.findById(id).orElse(null);
     }
-    //Actualizo el estado de una pausa
-   @PutMapping("/actualizarEstadoPausa/{id}")
-    public Pausa actualizarEstadoPausa(@PathVariable int id, @RequestBody EstadoPausa nuevoEstado){
-        return pausaRepository.findById(id)
-                .map(pausaExistente -> {
-                    pausaExistente.setEstado(nuevoEstado);
-            return pausaRepository.save(pausaExistente);
-        }).orElse(null);
+
+    /**
+     * @param id
+     * @param nuevoEstado
+     * @return una pausa actualizada
+     */
+    @PutMapping("/actualizarEstadoPausa/{id}")
+    public ResponseEntity<String>update(@PathVariable int id, @RequestBody EstadoPausa nuevoEstado){
+        Pausa pausaExistente = pausaRepository.findById(id).orElse(null);
+        if(pausaExistente != null){
+            pausaExistente.setEstado(nuevoEstado);
+            pausaRepository.save(pausaExistente);
+            return ResponseEntity.ok("Se modificó con éxito");
+        }else{
+            return ResponseEntity.badRequest().body("Error al actualizar el estado");
+        }
     }
+
+    /**
+     * Metodo para eliminar una pausa
+     * @param id
+     * @return un mensaje del servidor
+     */
+    @DeleteMapping("/elimnarPausa/{id}")
+    public ResponseEntity<String> delete(@PathVariable int id){
+        try{
+            pausaRepository.deleteById(id);
+            return ResponseEntity.ok("Se elimino con exito");
+        }catch (Exception e){
+            return ResponseEntity.badRequest().body("No se pudo eliminar "+e.getMessage());
+        }
+
+    }
+
 
 }

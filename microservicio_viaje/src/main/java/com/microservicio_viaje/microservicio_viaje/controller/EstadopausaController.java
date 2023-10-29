@@ -19,7 +19,7 @@ public class EstadopausaController {
      * @return todos los estados de la pausa
      */
     @GetMapping("/estadosPausa")
-    public Iterable<EstadoPausa> getAllEstadoPausa(){
+    public Iterable<EstadoPausa>getAll(){
         return estadoPausaRepository.findAll();
     }
 
@@ -29,7 +29,7 @@ public class EstadopausaController {
      * @return estado de la pausa asociado
      */
     @GetMapping("estadoPausa/id/{id}")
-    public EstadoPausa buscarEstadosPorId(@PathVariable int id){
+    public EstadoPausa get(@PathVariable int id){
         return estadoPausaRepository.findById(id).orElse(null);
     }
 
@@ -49,7 +49,7 @@ public class EstadopausaController {
      * @return una respuesta del servidor
      */
     @PostMapping("/nuevaPausa")
-    public ResponseEntity<String>  crearNuevoEstado(@RequestBody EstadoPausa estado){
+    public ResponseEntity<String>create(@RequestBody EstadoPausa estado){
         try{
             estadoPausaRepository.save(estado);
             return ResponseEntity.ok("Se agregó con exito");
@@ -66,7 +66,7 @@ public class EstadopausaController {
      * @return una respuesta del servidor
      */
     @PutMapping("/actualizarEstado/{id}")
-    public ResponseEntity<String> actualizarEstado(@PathVariable int id, @RequestBody EstadoPausa estado) {
+    public ResponseEntity<String>update(@PathVariable int id, @RequestBody EstadoPausa estado) {
             EstadoPausa estadoExistente = estadoPausaRepository.findById(id).orElse(null);
             if(estadoExistente != null){
                 estadoExistente.setEstadoDeLaPausa(estado.getEstadoDeLaPausa());
@@ -82,7 +82,7 @@ public class EstadopausaController {
      * @param id
      */
     @DeleteMapping("/eliminarEstado/{id}")
-    public ResponseEntity<String> eliminarEstadoPausa(@PathVariable int id){
+    public ResponseEntity<String>delete(@PathVariable int id){
         try{
             estadoPausaRepository.deleteById(id);
             return ResponseEntity.ok("Se elimino con exito");
