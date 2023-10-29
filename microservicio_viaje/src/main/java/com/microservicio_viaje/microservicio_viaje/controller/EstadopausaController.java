@@ -44,9 +44,9 @@ public class EstadopausaController {
     }
 
     /**
-     *
+     * Creacion de un nuevo estado
      * @param estado
-     * @return un nuevo estado
+     * @return una respuesta del servidor
      */
     @PostMapping("/nuevaPausa")
     public ResponseEntity<String>  crearNuevoEstado(@RequestBody EstadoPausa estado){
@@ -58,7 +58,13 @@ public class EstadopausaController {
         }
 
     }
-    //modifico un estado de la pausa
+
+    /**
+     * Actualizacion del estado
+     * @param id
+     * @param estado
+     * @return una respuesta del servidor
+     */
     @PutMapping("/actualizarEstado/{id}")
     public ResponseEntity<String> actualizarEstado(@PathVariable int id, @RequestBody EstadoPausa estado) {
             EstadoPausa estadoExistente = estadoPausaRepository.findById(id).orElse(null);
@@ -72,7 +78,7 @@ public class EstadopausaController {
     }
 
     /**
-     *
+     * Eliminacion de un estado por id
      * @param id
      */
     @DeleteMapping("/eliminarEstado/{id}")
