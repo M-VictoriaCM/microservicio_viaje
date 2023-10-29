@@ -37,6 +37,10 @@ public class ViajeService {
         viaje.getPausas().add(pausa);
     }
 
+    /**
+     *
+     * @return
+     */
     private Pausa crearNuevaPausa() {
         EstadoPausa estadoPausado= estadoPausaRepository.findByEstado("PAUSADO");
         Pausa pausa = new Pausa();
@@ -52,6 +56,11 @@ public class ViajeService {
         return viajeRepository.save(viaje);
     }
 
+    /**
+     *
+     * @param reanudar
+     * @return
+     */
     private long calcularTiempoTrancurridoDesdeReanudacion(Pausa reanudar) {
         Time horaReanudacion = reanudar.getHoraFinPausa();
         Time horaActual = new Time(System.currentTimeMillis());

@@ -14,6 +14,7 @@ public class EstadoPausa {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "idEstado")
     private int id;
+
     @Column(nullable = false)
     private String estadoDeLaPausa;
 }

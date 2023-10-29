@@ -16,21 +16,23 @@ public class PausaController {
 
     //Creo una pausa
     @PostMapping("/creoUnaPausa")
-    public Pausa creacionPausa(@RequestBody Pausa pausa){
+    public Pausa creacionPausa(@RequestBody Pausa pausa) {
         return pausaRepository.save(pausa);
     }
+
     //Obtengo todas las pausas
     @GetMapping("/pausa")
-    public List<Pausa> getAllPausa(){
+    public List<Pausa> getAllPausa() {
         return pausaRepository.findAll();
     }
+
     //Mostrar pausas por id
     @GetMapping("/pausa/id/{id}")
-    public Pausa  buscoPausasPorId(@PathVariable int id){
+    public Pausa buscoPausasPorId(@PathVariable int id) {
         return pausaRepository.findById(id).orElse(null);
     }
     //Actualizo el estado de una pausa
-    @PutMapping("/actualizarEstadoPausa/{id}")
+   @PutMapping("/actualizarEstadoPausa/{id}")
     public Pausa actualizarEstadoPausa(@PathVariable int id, @RequestBody EstadoPausa nuevoEstado){
         return pausaRepository.findById(id)
                 .map(pausaExistente -> {

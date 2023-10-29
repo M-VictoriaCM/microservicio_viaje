@@ -30,7 +30,7 @@ public class Pausa {
     private Viaje viaje;
 
     @ManyToOne
-    @JoinColumn(name = "estado_estadoId")
+    @JoinColumn(name = "estado_pausa_id")
     private EstadoPausa estado;
 
 }

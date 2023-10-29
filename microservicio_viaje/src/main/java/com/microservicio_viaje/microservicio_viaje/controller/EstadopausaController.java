@@ -4,9 +4,8 @@ import com.microservicio_viaje.microservicio_viaje.model.EstadoPausa;
 import com.microservicio_viaje.microservicio_viaje.repository.EstadoPausaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/service_viaje")
@@ -15,31 +14,75 @@ public class EstadopausaController {
     @Autowired
     private EstadoPausaRepository estadoPausaRepository;
 
-    //recupero todos los estados de la pausa
+    /**
+     *
+     * @return todos los estados de la pausa
+     */
     @GetMapping("/estadosPausa")
     public Iterable<EstadoPausa> getAllEstadoPausa(){
         return estadoPausaRepository.findAll();
     }
-    //Recupera los estados de las pausas por id
+
+    /**
+     *
+     * @param id
+     * @return estado de la pausa asociado
+     */
     @GetMapping("estadoPausa/id/{id}")
     public EstadoPausa buscarEstadosPorId(@PathVariable int id){
         return estadoPausaRepository.findById(id).orElse(null);
     }
-    //Busqueda por estado
-    @GetMapping("estadoPausa/{estaadoPausa}")
+
+    /**
+     *
+     * @param estado
+     * @return la informacion de ese estado
+     */
+    @GetMapping("/estadoPausa/porEstado/{estado}")
     public EstadoPausa findByEstado(@PathVariable String estado){
         return estadoPausaRepository.findByEstado(estado);
     }
-    //creo un nuevo estado
-    @PostMapping("/estadoNuevo")
-    public EstadoPausa crearNuevoEstado(@RequestBody EstadoPausa estado){
-        return estadoPausaRepository.save(estado);
+
+    /**
+     *
+     * @param estado
+     * @return un nuevo estado
+     */
+    @PostMapping("/nuevaPausa")
+    public ResponseEntity<String>  crearNuevoEstado(@RequestBody EstadoPausa estado){
+        try{
+            estadoPausaRepository.save(estado);
+            return ResponseEntity.ok("Se agregó con exito");
+        }catch (Exception e){
+            return ResponseEntity.badRequest().body("Lamentablemente no se posible agregar el dato "+e.getMessage());
+        }
+
     }
     //modifico un estado de la pausa
+    @PutMapping("/actualizarEstado/{id}")
+    public ResponseEntity<String> actualizarEstado(@PathVariable int id, @RequestBody EstadoPausa estado) {
+            EstadoPausa estadoExistente = estadoPausaRepository.findById(id).orElse(null);
+            if(estadoExistente != null){
+                estadoExistente.setEstadoDeLaPausa(estado.getEstadoDeLaPausa());
+                estadoPausaRepository.save(estadoExistente);
+                return ResponseEntity.ok("Se modificó con éxito");
+            }else{
+                return ResponseEntity.badRequest().body("Error al actualizar el estado");
+            }
+    }
 
-    //Eliminacion de los estados
+    /**
+     *
+     * @param id
+     */
     @DeleteMapping("/eliminarEstado/{id}")
-    public void eliminarEstadoPausa(@PathVariable int id){
-        estadoPausaRepository.deleteById(id);
+    public ResponseEntity<String> eliminarEstadoPausa(@PathVariable int id){
+        try{
+            estadoPausaRepository.deleteById(id);
+            return ResponseEntity.ok("Se elimino con exito");
+        }catch (Exception e){
+            return ResponseEntity.badRequest().body("No se pudo eliminar "+e.getMessage());
+        }
+
     }
 }
