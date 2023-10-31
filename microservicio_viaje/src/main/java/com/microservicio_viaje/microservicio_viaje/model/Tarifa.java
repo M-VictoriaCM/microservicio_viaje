@@ -17,13 +17,10 @@ public class Tarifa {
     @Column(name = "idTarifa")
     private int id;
     @Column(nullable = false)
-    private int precioPorMinuto;
+    private String tipo;
     @Column(nullable = false)
-    private int tarifaExtraPorPausaExtensa;
+    private int valor;
 
-    //Relaciones entre clases
-    @OneToMany(mappedBy = "tarifa", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Viaje> viajes;
 
 
 

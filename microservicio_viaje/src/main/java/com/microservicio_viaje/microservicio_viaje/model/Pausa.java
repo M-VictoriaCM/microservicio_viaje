@@ -21,14 +21,12 @@ public class Pausa {
     private int id;
     private Time horaInicioPausa;
     private Time horaFinPausa;
+    private String estadoDeLaPausa;
 
     //Relaciones entre la clase Pausa y la clase Viaje
     @ManyToOne
     @JoinColumn(name = "viaje_idViaje")
     private Viaje viaje;
 
-    @ManyToOne
-    @JoinColumn(name = "estado_pausa_id")
-    private EstadoPausa estado;
 
 }

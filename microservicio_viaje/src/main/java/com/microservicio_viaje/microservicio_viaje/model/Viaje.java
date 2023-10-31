@@ -29,14 +29,15 @@ public class Viaje {
     private Time horaFinViaje;
     @Column(nullable = false)
     private Timestamp fechaDelViaje;
+    private boolean isFinalizado;
     @Column(nullable = false)
     //Relacion con la tabla Pausa
     @OneToMany(mappedBy = "viaje", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Pausa> pausas = new ArrayList<>();
     //Relacion con la tabla Tarifa
-    @ManyToOne
-    @JoinColumn(name = "tarifa_idTarifa")
-    private Tarifa tarifa;
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "viaje_id")
+    private List<Tarifa> tarifas = new ArrayList<>();
 
 
 

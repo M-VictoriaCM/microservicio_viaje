@@ -1,8 +1,15 @@
 package com.microservicio_viaje.microservicio_viaje.controller;
 
+import com.microservicio_viaje.microservicio_viaje.DTO.PausaDTO;
+import com.microservicio_viaje.microservicio_viaje.DTO.ViajeDTO;
+import com.microservicio_viaje.microservicio_viaje.model.Pausa;
 import com.microservicio_viaje.microservicio_viaje.model.Viaje;
 import com.microservicio_viaje.microservicio_viaje.repository.ViajeRepository;
+import com.microservicio_viaje.microservicio_viaje.service.PausaService;
+import com.microservicio_viaje.microservicio_viaje.service.ViajeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -11,33 +18,30 @@ import java.util.List;
 @RequestMapping("/service_viaje")
 public class ViajeController {
     @Autowired
-    private ViajeRepository viajeRespository;
+    private ViajeService viajeService;
+    private PausaService pausaService;
 
-    //recupero todos los viajes
-    @GetMapping("/viajes")
-    public Iterable<Viaje>getAllViajes(){
-        return viajeRespository.findAll();
+    @PostMapping("/iniciarViaje")
+    public Viaje create(@RequestBody Viaje nuevoViaje){
+        return viajeService.iniciarViaje(nuevoViaje);
     }
-    //Recupero viajes por id
-    @GetMapping("viaje/id/{id}")
-    public Viaje buscarPorId(@PathVariable int id){
-        return viajeRespository.findById(id).orElse(null);
-    }
-    //Filtro de viajes por años
-    @GetMapping("/viajes/fecha/{fecha}")
-    public List<Viaje> findAllViajesByYear(@PathVariable int fecha){
-        return viajeRespository.findAllViajesByYear(fecha);
-    }
-    //Creo un nuevo viaje
-    @PostMapping("/nuevoViaje")
-    public Viaje crearNuevoViaje(@RequestBody Viaje viaje){
-        return viajeRespository.save(viaje);
-    }
-    //Elimino un viaje
-    @DeleteMapping("/eliminarViaje/{id}")
-    public void eliminarViaje(@PathVariable int id){
-        viajeRespository.deleteById(id);
-    }
+    @PostMapping("/pausarViaje/id/{id}")
+    public Viaje pausarViaje(@PathVariable int id) {
+        // Llama al método del servicio PausaService para crear la pausa
+        Pausa pausa = pausaService.crearPausa(id);
 
-
+        if (pausa != null) {
+            // La pausa se creó exitosamente, puedes devolver el viaje actualizado o cualquier otra respuesta que necesites
+            return viajeService.pausarViaje(id);
+        }
+        return null;
+    }
+   @GetMapping("/viaje/id/{id}")
+    public Viaje get(@PathVariable int id){
+       return viajeService.findById(id);
+   }
+   @GetMapping("/viajes")
+    public List<Viaje>getAll(){
+       return viajeService.findAll();
+   }
 }

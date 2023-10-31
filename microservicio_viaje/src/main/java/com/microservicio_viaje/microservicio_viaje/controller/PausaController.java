@@ -1,10 +1,12 @@
 package com.microservicio_viaje.microservicio_viaje.controller;
 
-import com.microservicio_viaje.microservicio_viaje.model.EstadoPausa;
+import com.microservicio_viaje.microservicio_viaje.DTO.PausaDTO;
 import com.microservicio_viaje.microservicio_viaje.model.Pausa;
+import com.microservicio_viaje.microservicio_viaje.model.Viaje;
 import com.microservicio_viaje.microservicio_viaje.repository.PausaRepository;
-import org.apache.coyote.Response;
+import com.microservicio_viaje.microservicio_viaje.service.PausaService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,72 +16,16 @@ import java.util.List;
 @RequestMapping("/service_viaje")
 public class PausaController {
     @Autowired
-    private PausaRepository pausaRepository;
+    private PausaService pausaService;
 
-    /**
-     * Creacion de una pausa
-     * @param pausa
-     * @return una respuesta
-     */
-    @PostMapping("/creoUnaPausa")
-    public ResponseEntity<String>create(@RequestBody Pausa pausa) {
-        try {
-            pausaRepository.save(pausa);
-            return ResponseEntity.ok("Se agregó con exito");
-        }catch (Exception e){
-            return ResponseEntity.badRequest().body("Lamentablemente no se posible agregar el dato "+e.getMessage());
+    @PostMapping("/crearPausa/{idViaje}")
+    public ResponseEntity<?> crearPausa(@PathVariable int idViaje) {
+        Pausa pausa = pausaService.crearPausa(idViaje);
+        if (pausa != null) {
+            return new ResponseEntity<>(pausa, HttpStatus.CREATED);
+        } else {
+            return new ResponseEntity<>("No se encontró el viaje con ID " + idViaje, HttpStatus.NOT_FOUND);
         }
-    }
-
-    /**
-     *
-     * @return Muestro todas pausas
-     */
-    @GetMapping("/pausa")
-    public List<Pausa> getAll() {
-        return pausaRepository.findAll();
-    }
-
-    /**
-     * @param id
-     * @return pausa asociada a la id
-     */
-    @GetMapping("/pausa/id/{id}")
-    public Pausa get(@PathVariable int id) {
-        return pausaRepository.findById(id).orElse(null);
-    }
-
-    /**
-     * @param id
-     * @param nuevoEstado
-     * @return una pausa actualizada
-     */
-    @PutMapping("/actualizarEstadoPausa/{id}")
-    public ResponseEntity<String>update(@PathVariable int id, @RequestBody EstadoPausa nuevoEstado){
-        Pausa pausaExistente = pausaRepository.findById(id).orElse(null);
-        if(pausaExistente != null){
-            pausaExistente.setEstado(nuevoEstado);
-            pausaRepository.save(pausaExistente);
-            return ResponseEntity.ok("Se modificó con éxito");
-        }else{
-            return ResponseEntity.badRequest().body("Error al actualizar el estado");
-        }
-    }
-
-    /**
-     * Metodo para eliminar una pausa
-     * @param id
-     * @return un mensaje del servidor
-     */
-    @DeleteMapping("/elimnarPausa/{id}")
-    public ResponseEntity<String> delete(@PathVariable int id){
-        try{
-            pausaRepository.deleteById(id);
-            return ResponseEntity.ok("Se elimino con exito");
-        }catch (Exception e){
-            return ResponseEntity.badRequest().body("No se pudo eliminar "+e.getMessage());
-        }
-
     }
 
 

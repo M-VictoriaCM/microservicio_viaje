@@ -15,6 +15,15 @@ public class TarifaController {
     private TarifaRepository tarifaRepository;
 
     /**
+     *
+     * @return Muestro todas las tarifas
+     */
+    @GetMapping("/tarifa")
+    public List<Tarifa> getAll(){
+        return tarifaRepository.findAll();
+    }
+
+    /**
      * Creacion de una nueva tarifa
      * @param tarifa
      * @return
@@ -28,14 +37,13 @@ public class TarifaController {
             return ResponseEntity.badRequest().body("Lamentablemente no se posible agregar el dato "+e.getMessage());
         }
     }
+    @GetMapping("/precioPorMinuto")
+    public int getPrecioPorMinuto() {
+        String tipo = "precio por minuto"; // El tipo que deseas buscar
+        Tarifa tarifa = tarifaRepository.findPrecioPorMinuto(tipo);
 
-    /**
-     *
-     * @return Muestro todas las tarifas
-     */
-    @GetMapping("/tarifa")
-    public List<Tarifa> getAll(){
-        return tarifaRepository.findAll();
+
+        return tarifa.getValor();
     }
 
     /**
@@ -46,42 +54,6 @@ public class TarifaController {
     @GetMapping("/tarifa/id/{id}")
     public Tarifa get(@PathVariable int id){
         return tarifaRepository.findById(id).orElse(null);
-    }
-
-    /**
-     * actualizacion de tarifa por minuto
-     * @param id
-     * @param tarifa
-     * @return respuesta del servidor
-     */
-    @PutMapping("/actualizarTarifaPorMinuto/{id}")
-    public ResponseEntity<String> updateTarifaPorMinuto(@PathVariable int id, @RequestBody Tarifa tarifa){
-         Tarifa tarifaExistentePorMin = tarifaRepository.findById(id).orElse(null);
-         if (tarifaExistentePorMin !=null){
-             tarifaExistentePorMin.setPrecioPorMinuto(tarifa.getPrecioPorMinuto());
-             tarifaRepository.save(tarifaExistentePorMin);
-             return ResponseEntity.ok("Se modificó con éxito");
-         }else{
-             return ResponseEntity.badRequest().body("Error al actualizar el estado");
-         }
-    }
-
-    /**
-     * Actualizacion en la tarifa extra
-     * @param id
-     * @param tarifa
-     * @return respuesta del servidor
-     */
-    @PutMapping("/actualizarTarifaExtra/{id}")
-    public ResponseEntity<String>  updateTarifaExtra(@PathVariable int id, @RequestBody Tarifa tarifa){
-        Tarifa tarifaExistenteExtra = tarifaRepository.findById(id).orElse(null);
-        if (tarifaExistenteExtra !=null){
-            tarifaExistenteExtra.setTarifaExtraPorPausaExtensa(tarifa.getTarifaExtraPorPausaExtensa());
-            tarifaRepository.save(tarifaExistenteExtra);
-            return ResponseEntity.ok("Se modificó con éxito");
-        }else{
-            return ResponseEntity.badRequest().body("Error al actualizar el estado");
-        }
     }
 
     /**
@@ -98,5 +70,8 @@ public class TarifaController {
             return ResponseEntity.badRequest().body("No se pudo eliminar "+e.getMessage());
         }
     }
+
+
+    
 
 }
