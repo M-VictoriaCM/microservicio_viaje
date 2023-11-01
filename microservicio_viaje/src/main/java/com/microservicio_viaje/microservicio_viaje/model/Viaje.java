@@ -29,6 +29,7 @@ public class Viaje {
     @Column(nullable = false)
     private Timestamp fechaDelViaje;
     private boolean isFinalizado;
+    private double cobroViaje;
     @Column(nullable = false)
     //Relacion con la tabla Pausa
     @Getter(AccessLevel.NONE)
@@ -57,17 +58,22 @@ public class Viaje {
         this.isFinalizado = isFinalizado;
     }
 
-    public Viaje(String origenDelViaje, String destinoDelViaje, Time horaInicioViaje, Time horaFinViaje, Timestamp fechaDelViaje, boolean isFinalizado) {
+    public Viaje(String origenDelViaje, String destinoDelViaje, Time horaInicioViaje, Time horaFinViaje, Timestamp fechaDelViaje, boolean isFinalizado, double cobroViaje) {
         this.origenDelViaje = origenDelViaje;
         this.destinoDelViaje = destinoDelViaje;
         this.horaInicioViaje = horaInicioViaje;
         this.horaFinViaje = horaFinViaje;
         this.fechaDelViaje = fechaDelViaje;
         this.isFinalizado = isFinalizado;
+        this.cobroViaje= cobroViaje;
         this.pausas = new ArrayList<>();
         this.tarifas = new ArrayList<>();
     }
     public void addPausaDelViaje(Pausa pausa){
         this.pausas.add(pausa);
+    }
+
+    public void addTarifaInicial(Tarifa tarifa){
+        this.tarifas.add(tarifa);
     }
 }

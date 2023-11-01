@@ -1,6 +1,9 @@
 package com.microservicio_viaje.microservicio_viaje.service;;
 
+import com.microservicio_viaje.microservicio_viaje.DTO.ViajeDTO;
+import com.microservicio_viaje.microservicio_viaje.model.Tarifa;
 import com.microservicio_viaje.microservicio_viaje.model.Viaje;
+import com.microservicio_viaje.microservicio_viaje.repository.TarifaRepository;
 import com.microservicio_viaje.microservicio_viaje.repository.ViajeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -8,14 +11,17 @@ import org.springframework.stereotype.Service;
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ViajeService {
     @Autowired
     private final ViajeRepository viajeRepository;
-
-    public ViajeService(ViajeRepository viajeRepository) {
+    @Autowired
+    private final TarifaRepository tarifaRepository;
+    public ViajeService(ViajeRepository viajeRepository, TarifaRepository tarifaRepository) {
         this.viajeRepository = viajeRepository;
+        this.tarifaRepository = tarifaRepository;
     }
 
     public List<Viaje> getAllViajes() {
@@ -26,15 +32,24 @@ public class ViajeService {
         return viajeRepository.findById(id).orElse(null);
     }
 
-    public Viaje create(Viaje nuevo) {
-        nuevo.setOrigenDelViaje(nuevo.getOrigenDelViaje());
-        nuevo.setFechaDelViaje(new Timestamp(System.currentTimeMillis()));
-        nuevo.setHoraInicioViaje(new Time(System.currentTimeMillis()));
-        nuevo.setFinalizado(false);
-        viajeRepository.save(nuevo);
+    public void create(ViajeDTO nuevo) {
+        Viaje viaje = new Viaje();
+        Optional<Tarifa> tarifa = tarifaRepository.findById(1);
+        viaje.setOrigenDelViaje(nuevo.getOrigenDelViaje());
+        viaje.setFechaDelViaje(new Timestamp(System.currentTimeMillis()));
+        viaje.setHoraInicioViaje(new Time(System.currentTimeMillis()));
+        viaje.setFinalizado(false);
+        viaje.addTarifaInicial(tarifa.get());
+        viajeRepository.save(viaje);
 
-        return nuevo;
     }
-
+    public double calcularFacturadoEnRango(int anio, int mesInicio, int mesFin){
+        List<Viaje>viajeEnRango = viajeRepository.finByRangoDeMes(anio, mesInicio, mesFin);
+        double totalFacturado = 0.0;
+        for(Viaje v : viajeEnRango){
+            totalFacturado += v.getCobroViaje();
+        }
+        return totalFacturado;
+    }
 
 }
