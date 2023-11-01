@@ -13,8 +13,6 @@ public interface TarifaRepository extends JpaRepository<Tarifa, Integer> {
     @Query("SELECT t FROM Tarifa t WHERE t.tipo = :tipo")
     Tarifa findPrecioPorMinuto(String tipo);
 
-
-
     /**@Query("SELECT t.tarifaExtraPorPausaExtensa FROM Tarifa t")
     Tarifa findByPrecioExtra();**/
 }

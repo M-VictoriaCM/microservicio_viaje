@@ -12,7 +12,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 public class Tarifa {
-	@Id
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "idTarifa")
     private int id;
@@ -20,8 +20,4 @@ public class Tarifa {
     private String tipo;
     @Column(nullable = false)
     private int valor;
-
-
-
-
 }

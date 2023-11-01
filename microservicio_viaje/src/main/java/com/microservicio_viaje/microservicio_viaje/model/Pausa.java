@@ -15,7 +15,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 public class Pausa {
-	@Id
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "idPausa")
     private int id;
@@ -27,6 +27,4 @@ public class Pausa {
     @ManyToOne
     @JoinColumn(name = "viaje_idViaje")
     private Viaje viaje;
-
-
 }
