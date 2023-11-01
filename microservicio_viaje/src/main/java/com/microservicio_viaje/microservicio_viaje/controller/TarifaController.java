@@ -71,7 +71,22 @@ public class TarifaController {
         }
     }
 
-
+    /**
+     * Actualiza la tarifa del viaje según el id
+     * @param id
+     * @param valor
+     */
+    @PutMapping("actualizarTarifa/{id}/{valor}")
+    public ResponseEntity<String> actualizarTarifa(@PathVariable int id, @PathVariable int valor){
+        Tarifa tarifa = tarifaRepository.findById(id).orElse(null);
+        try{
+            tarifa.setValor(valor);
+            tarifaRepository.save(tarifa);
+            return ResponseEntity.ok("El valor de la tarifa "+tarifa.getTipo()+" se actualizó correctamente");
+        }catch (Exception e){
+            return ResponseEntity.badRequest().body("La tarifa que está queriendo actualizar no exite.");
+        }
+    }
     
 
 }
