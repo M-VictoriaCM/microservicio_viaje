@@ -1,6 +1,7 @@
 package com.microservicio_viaje.microservicio_viaje.service;;
 
 import com.microservicio_viaje.microservicio_viaje.DTO.ViajeDTO;
+import com.microservicio_viaje.microservicio_viaje.model.Monopatin;
 import com.microservicio_viaje.microservicio_viaje.model.Tarifa;
 import com.microservicio_viaje.microservicio_viaje.model.Viaje;
 import com.microservicio_viaje.microservicio_viaje.repository.TarifaRepository;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.sql.Time;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,6 +21,7 @@ public class ViajeService {
     private final ViajeRepository viajeRepository;
     @Autowired
     private final TarifaRepository tarifaRepository;
+
     public ViajeService(ViajeRepository viajeRepository, TarifaRepository tarifaRepository) {
         this.viajeRepository = viajeRepository;
         this.tarifaRepository = tarifaRepository;
@@ -43,13 +46,34 @@ public class ViajeService {
         viajeRepository.save(viaje);
 
     }
-    public double calcularFacturadoEnRango(int anio, int mesInicio, int mesFin){
-        List<Viaje>viajeEnRango = viajeRepository.finByRangoDeMes(anio, mesInicio, mesFin);
+
+    public double calcularFacturadoEnRango(int anio, int mesInicio, int mesFin) {
+        List<Viaje> viajeEnRango = viajeRepository.finByRangoDeMes(anio, mesInicio, mesFin);
         double totalFacturado = 0.0;
-        for(Viaje v : viajeEnRango){
+        for (Viaje v : viajeEnRango) {
             totalFacturado += v.getCobroViaje();
         }
         return totalFacturado;
     }
 
+    public List<Viaje> findViajesConPausa() {
+        return viajeRepository.findViajesConPausa();
+    }
+
+    public List<Viaje> findAllViajesByYear(int anio) {
+        return viajeRepository.findAllViajesByYear(anio);
+    }
+
+    public List<Monopatin> cantidadDeViajesPorAnio(int cantidadViajes, int anio) {
+        List<Monopatin> monopatinesFiltrados = new ArrayList<>();
+
+        List<Viaje> lista = viajeRepository.findAllViajesByYear(anio);
+        for (Viaje v : lista) {
+            if (v.getMonopatin().getCantViajes() > cantidadViajes) {
+                monopatinesFiltrados.add(v.getMonopatin());
+            }
+        }
+
+        return monopatinesFiltrados;
+    }
 }

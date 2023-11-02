@@ -1,6 +1,7 @@
 package com.microservicio_viaje.microservicio_viaje.controller;
 
 import com.microservicio_viaje.microservicio_viaje.DTO.ViajeDTO;
+import com.microservicio_viaje.microservicio_viaje.model.Monopatin;
 import com.microservicio_viaje.microservicio_viaje.model.Viaje;
 import com.microservicio_viaje.microservicio_viaje.service.ViajeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,15 @@ public class ViajeController {
     @GetMapping("/facturacion/{anio}/{mesInicio}/{mesFin}")
     public double calcularFacturadoEnRango(@PathVariable int anio, @PathVariable int mesInicio,@PathVariable int mesFin) {
         return viajeService.calcularFacturadoEnRango(anio, mesInicio, mesFin);
+    }
+    @GetMapping("/viajesPorAnio/{anio}")
+    public List<Viaje>findAllViajesByYear(@PathVariable int anio){
+        return viajeService.findAllViajesByYear(anio);
+    }
+
+    @GetMapping("/cantidaViajesPorAnio/{cantidadViajes}{anio}")
+    public List<Monopatin> cantidadDeViajesPorAnio(int cantidadViajes, int anio){
+        return viajeService.cantidadDeViajesPorAnio(cantidadViajes, anio);
     }
 
 }

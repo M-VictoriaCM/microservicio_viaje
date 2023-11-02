@@ -13,4 +13,5 @@ public class Monopatin {
     private String ubicacion;
     private int km_recorridos;
     private Estado estado;
+    private int cantViajes;
 }
