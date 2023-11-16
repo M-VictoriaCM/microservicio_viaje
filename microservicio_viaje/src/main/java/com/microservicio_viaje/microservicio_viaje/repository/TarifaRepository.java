@@ -8,11 +8,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface TarifaRepository extends JpaRepository<Tarifa, Integer> {
-    // Devuelve el precio por minuto
-    // En tu repositorio de tarifas
-    @Query("SELECT t FROM Tarifa t WHERE t.tipo = :tipo")
-    Tarifa findPrecioPorMinuto(String tipo);
-
-    /**@Query("SELECT t.tarifaExtraPorPausaExtensa FROM Tarifa t")
-    Tarifa findByPrecioExtra();**/
+    @Query("SELECT t.valor FROM Tarifa t WHERE t.tipo =:tipo")
+    double findTarifaByTipo(@Param("tipo") String tipo);
 }

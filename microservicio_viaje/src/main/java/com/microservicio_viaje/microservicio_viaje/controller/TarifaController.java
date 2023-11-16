@@ -37,17 +37,8 @@ public class TarifaController {
             return ResponseEntity.badRequest().body("Lamentablemente no se posible agregar el dato "+e.getMessage());
         }
     }
-    @GetMapping("/precioPorMinuto")
-    public int getPrecioPorMinuto() {
-        String tipo = "precio por minuto"; // El tipo que deseas buscar
-        Tarifa tarifa = tarifaRepository.findPrecioPorMinuto(tipo);
-
-
-        return tarifa.getValor();
-    }
 
     /**
-     *
      * @param id
      * @return tarifa asociada a la id
      */
@@ -69,6 +60,10 @@ public class TarifaController {
         }catch (Exception e){
             return ResponseEntity.badRequest().body("No se pudo eliminar "+e.getMessage());
         }
+    }
+    @GetMapping("/tipo/{tipo}")
+    public double getPrecioPorMinuto(@PathVariable String tipo) {
+        return tarifaRepository.findTarifaByTipo(tipo);
     }
 
     /**

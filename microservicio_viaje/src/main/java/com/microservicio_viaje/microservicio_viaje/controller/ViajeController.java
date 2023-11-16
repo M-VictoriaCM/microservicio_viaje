@@ -5,6 +5,8 @@ import com.microservicio_viaje.microservicio_viaje.model.Monopatin;
 import com.microservicio_viaje.microservicio_viaje.model.Viaje;
 import com.microservicio_viaje.microservicio_viaje.service.ViajeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,7 +28,15 @@ public class ViajeController {
     public void create(@RequestBody ViajeDTO nuevo){
        viajeService.create(nuevo);
     }
-
+    @PutMapping("/finalizarViaje/{viajeId}")
+    public ResponseEntity<ViajeDTO> finalizarViaje(@PathVariable int viajeId, @RequestBody ViajeDTO viajeFinalizado) {
+        Viaje viaje= viajeService.finalizarViaje(viajeId, viajeFinalizado);
+        if (viaje != null) {
+            return  new ResponseEntity<>(viajeFinalizado,HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
     @GetMapping("/facturacion/{anio}/{mesInicio}/{mesFin}")
     public double calcularFacturadoEnRango(@PathVariable int anio, @PathVariable int mesInicio,@PathVariable int mesFin) {
         return viajeService.calcularFacturadoEnRango(anio, mesInicio, mesFin);

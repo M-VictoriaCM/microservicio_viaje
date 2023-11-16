@@ -58,6 +58,14 @@ public class PausaController {
             return ResponseEntity.notFound().build();
         }
     }
+    @GetMapping("pausa/idViaje/{idViaje}")
+    public List<Pausa> findPausaByViaje(@PathVariable("idViaje") int idViaje){
+        Viaje viaje = viajeService.getId(idViaje);
+        if (viaje != null) {
+            return pausaService.findPausaByViaje(idViaje);
+        }
+        return null;
+    }
 
 
 }

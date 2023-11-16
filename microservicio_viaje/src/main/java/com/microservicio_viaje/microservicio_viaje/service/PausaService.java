@@ -30,7 +30,9 @@ public class PausaService {
         return pausaRepository.findById(id).orElse(null);
     }
 
-
+    public List<Pausa>findPausaByViaje(int idViaje){
+        return pausaRepository.findPausaByViaje(idViaje);
+    }
     public Pausa crearPausa(int id) {
         Viaje viaje = viajeRepository.findById(id).orElse(null);
         Pausa pausa = new Pausa();
