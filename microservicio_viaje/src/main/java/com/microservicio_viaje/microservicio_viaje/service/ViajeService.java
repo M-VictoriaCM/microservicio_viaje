@@ -1,7 +1,6 @@
 package com.microservicio_viaje.microservicio_viaje.service;;
 
-import com.microservicio_viaje.microservicio_viaje.DTO.ViajeDTO;
-import com.microservicio_viaje.microservicio_viaje.model.Monopatin;
+
 import com.microservicio_viaje.microservicio_viaje.model.Pausa;
 import com.microservicio_viaje.microservicio_viaje.model.Tarifa;
 import com.microservicio_viaje.microservicio_viaje.model.Viaje;
@@ -13,7 +12,6 @@ import org.springframework.stereotype.Service;
 
 import java.sql.Time;
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -40,7 +38,7 @@ public class ViajeService {
         return viajeRepository.findById(id).orElse(null);
     }
 
-    public void create(ViajeDTO nuevo) {
+    public void create(Viaje nuevo) {
         Viaje viaje = new Viaje();
         Optional<Tarifa> tarifa = tarifaRepository.findById(1);
         viaje.setOrigenDelViaje(nuevo.getOrigenDelViaje());
@@ -67,7 +65,7 @@ public class ViajeService {
     public List<Viaje> findAllViajesByYear(int anio) {
         return viajeRepository.findAllViajesByYear(anio);
     }
-    public List<Monopatin> cantidadDeViajesPorAnio(int cantidadViajes, int anio) {
+    /*public List<Monopatin> cantidadDeViajesPorAnio(int cantidadViajes, int anio) {
         List<Monopatin> monopatinesFiltrados = new ArrayList<>();
         List<Viaje> lista = viajeRepository.findAllViajesByYear(anio);
         for (Viaje v : lista) {
@@ -77,8 +75,8 @@ public class ViajeService {
         }
 
         return monopatinesFiltrados;
-    }
-    public Viaje finalizarViaje(int viajeId, ViajeDTO viaje) {
+    }*/
+    public Viaje finalizarViaje(int viajeId, Viaje viaje) {
         Optional<Viaje> viajeOptional = viajeRepository.findById(viajeId);
         if(viajeOptional.isPresent()){
             Viaje viajeFinalizado = viajeOptional.get();
@@ -164,9 +162,8 @@ public class ViajeService {
         }
         return 0;
     }
-    private List<Pausa> obtenerpausasDelViaje(Viaje viaje) {
+    private List<Pausa>obtenerpausasDelViaje(Viaje viaje) {
         return pausaRepository.findPausaByViaje(viaje.getId());
     }
-
 
 }

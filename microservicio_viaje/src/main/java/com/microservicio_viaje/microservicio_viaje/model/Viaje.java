@@ -30,7 +30,6 @@ public class Viaje {
     private Timestamp fechaDelViaje;
     private boolean isFinalizado;
     private double cobroViaje;
-    private Monopatin monopatin;
     @Column(nullable = false)
     //Relacion con la tabla Pausa
     @Getter(AccessLevel.NONE)

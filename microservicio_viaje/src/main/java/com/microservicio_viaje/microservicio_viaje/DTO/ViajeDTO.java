@@ -1,7 +1,6 @@
 package com.microservicio_viaje.microservicio_viaje.DTO;
 
-import com.microservicio_viaje.microservicio_viaje.model.Monopatin;
-import jakarta.persistence.Column;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -20,6 +19,5 @@ public class ViajeDTO {
     private Timestamp fechaDelViaje;
     private boolean isFinalizado;
     private double cobroViaje;
-
 
 }
