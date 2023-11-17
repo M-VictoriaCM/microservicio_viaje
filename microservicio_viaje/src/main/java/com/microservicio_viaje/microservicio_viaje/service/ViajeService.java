@@ -23,6 +23,8 @@ public class ViajeService {
     private final PausaRepository pausaRepository;
     @Autowired
     private final TarifaRepository tarifaRepository;
+    @Autowired
+    JwtService jwtService;
 
     public ViajeService(ViajeRepository viajeRepository, PausaRepository pausaRepository, TarifaRepository tarifaRepository) {
         this.viajeRepository = viajeRepository;
