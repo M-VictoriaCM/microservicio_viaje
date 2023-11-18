@@ -27,15 +27,13 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())  //deshabilita la protección CSRF (Cross-Site Request Forgery)
                 .authorizeHttpRequests(authRequest ->
                         authRequest
-                                .requestMatchers("/service_viaje/**").permitAll() //permite el acceso a rutas específicas sin autenticación (solo login y registro)
+                                .requestMatchers("/service_viaje/**").permitAll()
+                                .requestMatchers("/monopatin/**").permitAll()
                                 .anyRequest().authenticated() //requiere autenticación para cualquier otra solicitud
                 )
                 .sessionManagement(sessionManager ->
                         sessionManager.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) //configura la política de creación de sesión como sin estado (stateless)
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class) //agrega el filtro JWT antes del filtro de nombre de usuario y contraseña
                 .build(); //construye y devuelve la cadena de filtros de seguridad
-
     }
-
-
 }
