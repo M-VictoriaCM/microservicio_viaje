@@ -67,17 +67,7 @@ public class ViajeService {
     public List<Viaje> findAllViajesByYear(int anio) {
         return viajeRepository.findAllViajesByYear(anio);
     }
-    /*public List<Monopatin> cantidadDeViajesPorAnio(int cantidadViajes, int anio) {
-        List<Monopatin> monopatinesFiltrados = new ArrayList<>();
-        List<Viaje> lista = viajeRepository.findAllViajesByYear(anio);
-        for (Viaje v : lista) {
-            if (v.getMonopatin().getCantViajes() > cantidadViajes) {
-                monopatinesFiltrados.add(v.getMonopatin());
-            }
-        }
 
-        return monopatinesFiltrados;
-    }*/
     public Viaje finalizarViaje(int viajeId, Viaje viaje) {
         Optional<Viaje> viajeOptional = viajeRepository.findById(viajeId);
         if(viajeOptional.isPresent()){
