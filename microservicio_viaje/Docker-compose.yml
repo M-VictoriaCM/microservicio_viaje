@@ -1,0 +1,14 @@
+version: '4.2'
+services:
+  mysql:
+    image: mysql2
+    container_name: my_mysql2
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./data:/var/lib/mysql2
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: service_viaje
+      MYSQL_USER: root3
+      MYSQL_PASSWORD: root3
