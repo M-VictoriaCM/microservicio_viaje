@@ -47,6 +47,10 @@ public class ViajeController {
             ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Token no válido");
         }
     }
+    /*@PostMapping("/inicioViaje")
+    public void create(@RequestBody Viaje nuevo){
+        viajeService.create(nuevo);
+    }*/
     @PutMapping("/finalizarViaje/{viajeId}")
     public ResponseEntity<Viaje> finalizarViaje(@RequestHeader("Authorization") String authorizationHeader, @PathVariable int viajeId, @RequestBody Viaje viajeFinalizado) {
         String token = authorizationHeader.replace("Bearer ", "");
