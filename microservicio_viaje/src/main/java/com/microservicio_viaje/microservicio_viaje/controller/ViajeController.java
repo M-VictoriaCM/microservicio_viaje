@@ -42,7 +42,7 @@ public class ViajeController {
     public void create(@RequestHeader("Authorization") String authorizationHeader, @RequestBody Viaje nuevo){
         String token = authorizationHeader.replace("Bearer ", "");
         if(jwtService.isTokenValid(token)) {
-            viajeService.create(nuevo);
+            viajeService.create(nuevo, token);
         }else{
             ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Token no válido");
         }
@@ -56,7 +56,7 @@ public class ViajeController {
         String token = authorizationHeader.replace("Bearer ", "");
         if(jwtService.isTokenValid(token)) {
             if (viajeFinalizado != null) {
-                Viaje viaje = viajeService.finalizarViaje(viajeId, viajeFinalizado);
+                Viaje viaje = viajeService.finalizarViaje(viajeId, viajeFinalizado, token);
                 return new ResponseEntity<>(viajeFinalizado, HttpStatus.OK);
             }
         }else{

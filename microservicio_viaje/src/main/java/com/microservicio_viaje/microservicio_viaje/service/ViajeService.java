@@ -8,6 +8,8 @@ import com.microservicio_viaje.microservicio_viaje.repository.PausaRepository;
 import com.microservicio_viaje.microservicio_viaje.repository.TarifaRepository;
 import com.microservicio_viaje.microservicio_viaje.repository.ViajeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.sql.Time;
@@ -40,15 +42,19 @@ public class ViajeService {
         return viajeRepository.findById(id).orElse(null);
     }
 
-    public void create(Viaje nuevo) {
-        Viaje viaje = new Viaje();
-        Optional<Tarifa> tarifa = tarifaRepository.findById(1);
-        viaje.setOrigenDelViaje(nuevo.getOrigenDelViaje());
-        viaje.setFechaDelViaje(new Timestamp(System.currentTimeMillis()));
-        viaje.setHoraInicioViaje(new Time(System.currentTimeMillis()));
-        viaje.setFinalizado(false);
-        viaje.addTarifaInicial(tarifa.get());
-        viajeRepository.save(viaje);
+    public void create(Viaje nuevo, String token) {
+        if(jwtService.isTokenValid(token)) {
+            Viaje viaje = new Viaje();
+            Optional<Tarifa> tarifa = tarifaRepository.findById(1);
+            viaje.setOrigenDelViaje(nuevo.getOrigenDelViaje());
+            viaje.setFechaDelViaje(new Timestamp(System.currentTimeMillis()));
+            viaje.setHoraInicioViaje(new Time(System.currentTimeMillis()));
+            viaje.setFinalizado(false);
+            viaje.addTarifaInicial(tarifa.get());
+            viajeRepository.save(viaje);
+        }else{
+            ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Token no válido");
+        }
     }
 
     public double calcularFacturadoEnRango(int anio, int mesInicio, int mesFin) {
@@ -68,22 +74,26 @@ public class ViajeService {
         return viajeRepository.findAllViajesByYear(anio);
     }
 
-    public Viaje finalizarViaje(int viajeId, Viaje viaje) {
-        Optional<Viaje> viajeOptional = viajeRepository.findById(viajeId);
-        if(viajeOptional.isPresent()){
-            Viaje viajeFinalizado = viajeOptional.get();
-            viajeFinalizado.setDestinoDelViaje(viaje.getDestinoDelViaje());
-            viajeFinalizado.setHoraFinViaje(new Time(System.currentTimeMillis()));
-            viajeFinalizado.setFinalizado(true);
+    public Viaje finalizarViaje(int viajeId, Viaje viaje, String token) {
+        if(jwtService.isTokenValid(token)) {
+            Optional<Viaje> viajeOptional = viajeRepository.findById(viajeId);
+            if (viajeOptional.isPresent()) {
+                Viaje viajeFinalizado = viajeOptional.get();
+                viajeFinalizado.setDestinoDelViaje(viaje.getDestinoDelViaje());
+                viajeFinalizado.setHoraFinViaje(new Time(System.currentTimeMillis()));
+                viajeFinalizado.setFinalizado(true);
 
-            //obtengo las pausas del viaje
-            List<Pausa>pausasViaje= obtenerpausasDelViaje(viajeFinalizado);
-            //calculo el costo del viaje
-            int costoDelViaje = calcularCostoDelViaje(viajeFinalizado, pausasViaje);
-            viajeFinalizado.setCobroViaje(costoDelViaje);
-            //guardo el viaje
-            viajeRepository.save(viajeFinalizado);
-            return viajeFinalizado;
+                //obtengo las pausas del viaje
+                List<Pausa> pausasViaje = obtenerpausasDelViaje(viajeFinalizado);
+                //calculo el costo del viaje
+                int costoDelViaje = calcularCostoDelViaje(viajeFinalizado, pausasViaje);
+                viajeFinalizado.setCobroViaje(costoDelViaje);
+                //guardo el viaje
+                viajeRepository.save(viajeFinalizado);
+                return viajeFinalizado;
+            }
+        }else{
+            ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Token no válido");
         }
         return null;
     }
